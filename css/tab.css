@@ -1,5 +1,11 @@
 
                                                                   /* Start Login & Register Page */
+.loginRegisterForm{
+    width: 60%;
+}       
+.loginRegisterForm input{
+    margin: 10px 0px;
+}                                                          
                                                                   /* End Login & Register Page */
 
 

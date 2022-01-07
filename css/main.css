@@ -1,19 +1,114 @@
+*{
+    font-family: Bradley Hand, cursive;
+}
+:root {
+    --primaryColor: rgb(114, 74, 0);
+    --secondryColor: rgb(131, 131, 247);
+}
+a{
+      text-decoration: none;
+      color: black;
+      font-weight: bold;
+  }
+                                                                  /* ------------------------- Start Login & Register Page ------------------------- */
+.loginRegisterBody{
+    background-image:   url("../images/bg.jpg") ;
+    background-attachment: fixed;
+    background-clip: content-box;
+  }
+.loginRegisterForm{
+    background-color: white;
+    width: 23%;
+    margin: 150px auto;
+    border: solid 2px var(--primaryColor);
+    border-radius: 10px;
+    padding: 3%;
+    display: flex;
+    flex-flow: column;
+    gap: 20px;
+    box-shadow: 0 4px 8px 0 black;
+    transition: 0.8s;
+}
+.loginRegisterForm:hover {
+    box-shadow: 0 18px 30px 0 black;
+    padding: 3.5%;
+}
+.loginRegisterForm label {
+    margin-left: 30px;
+}
+.loginRegisterForm h1 , .loginRegisterForm h4 {
+    text-align: center;
+}
+.loginRegisterForm h1{
+    color: var(--primaryColor);
+    font-weight: bolder;
+}
+.loginRegisterForm input {
+    width: 80%;
+    padding: 10px;
+    margin: 10px 0px 10px 30px;
+    display: block;
+    border-radius: 10px;
+    border : solid 2px grey;
+    transition: 1s;
+  }
+  .loginRegisterForm input:focus {
+    outline: none;
+    width: 85%;
+    margin-left: 10px;
+    padding: 15px;
+    border : solid 2px var(--primaryColor);
+  }
+  .loginRegisterForm button{
+      margin: 10px auto 0px;
+      width: 40%;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 10px;
+      background-color: var(--primaryColor);
+      transition: .3s;
+      color: white;
+  }
+  .loginRegisterForm button:hover{
+    box-shadow: 0 18px 30px 0 rgba(65, 64, 64, 0.2);
+    width: 45%;
+    padding:  15px 10px;
+    cursor: pointer;
+  }
+  #registerForm{
+    width: 50%;
+}
+#registerForm .inner{
+    width: 100%;
+    gap: 10px;
+    display: flex;
+    flex-flow: row;
+}
+#registerForm input[name=address]{
+    width: 90%;
+    margin: 0px auto;
+}
+#registerForm a{
+  color: var(--primaryColor);
+}
+#registerForm div{
+    width: 50%;
+    display: inline;
+}
+                                                                  /* ------------------------- End Login & Register Page ------------------------- */
 
-                                                                  /* Start Login & Register Page */
-                                                                  /* End Login & Register Page */
 
 
 
-
-                                                                  /* Start Admin Page */
-                                                                  /* End Admin Page */
-
-
-
-                                                                  /* Start Security Page */
-                                                                  /* End Security Page */
+                                                                  /* ------------------------- Start Admin Page ------------------------- */
+                                                                  /* ------------------------- End Admin Page ------------------------- */
 
 
 
-                                                                  /* Start Employee Page */
-                                                                  /* End Employee Page */
+                                                                  /* ------------------------- Start Security Page ------------------------- */
+                                                                  /* ------------------------- End Security Page ------------------------- */
+
+
+
+                                                                  /* ------------------------- Start Employee Page ------------------------- */
+                                                                  /* ------------------------- End Employee Page ------------------------- */

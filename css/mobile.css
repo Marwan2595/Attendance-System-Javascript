@@ -1,11 +1,28 @@
 
                                                                   /* Start Login & Register Page */
+.loginRegisterForm{
+    width: 90%;
+}
+#registerForm {
+    width: 90%;
+}
+#registerForm .inner{
+    width: 100%;
+    display: block;
+}
+.loginRegisterForm input{
+    margin:10px 0px 10px 30px;
+} 
+#registerForm input[name=address]{
+    margin:10px 0px 10px 30px;
+    width: 80%;
+} 
                                                                   /* End Login & Register Page */
 
 
 
 
-                                                                  /* Start Admin Page */
+                                                   /* Start Admin Page */
                                                                   /* End Admin Page */
 
 

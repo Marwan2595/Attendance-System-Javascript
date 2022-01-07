@@ -4,13 +4,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
     @import url("css/main.css");
-    @import url("css/desktop.css") screen and (min-width: 1001px);
-    @import url("css/tab.css") screen and (max-width: 1000px);
-    @import url("css/mobile.css") screen and (max-width: 600px);
+    @import url("css/desktop.css") screen and (min-width: 1301px);
+    @import url("css/tab.css") screen and (max-width: 1300px);
+    @import url("css/mobile.css") screen and (max-width: 900px);
 </style>
 </head>
-<body>
-    
+<body class="loginRegisterBody">
+    <form class="loginRegisterForm" id="loginForm" action="">
+        <h1>Welcome Back,</h1>
+        <label for="username">Username</label>
+        <input type="text" name="username" id="username" autocomplete="off" required>
+        <label for="password">Password </label>
+        <input type="password" name="pass" id="pass" required>
+        <button type="submit">Login</button>
+        <a href="register.html"><h4>Create your Account ?</h4></a>
+    </form>
+
     <script src="js/jquery-3.1.1.js"></script>
     <script src="js/jqueryUi/jquery-ui.js"></script>
     <script src="js/main.js"></script>
