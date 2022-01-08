@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <link href="../js/calender/lib/main.css" rel="stylesheet" />
+    <style>
+        @import url("../css/main.css");
+        @import url("../css/desktop.css") screen and (min-width: 1301px);
+        @import url("../css/tab.css") screen and (max-width: 1300px);
+        @import url("../css/mobile.css") screen and (max-width: 600px);
+    </style>
+    <script src="../js/calender/lib/main.js"></script>
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                headerToolbar: {
+                    left: '',
+                    center: 'title',
+                    right: '',
+                },
+                editable: false,
+                firstDay: 6, //  1(Monday) this can be changed to 0(Sunday) for the USA system
+                selectable: false,
+                defaultView: 'month',
+                axisFormat: 'h:mm',
+                columnFormat: {
+                    month: 'ddd', // Mon 
+                    agendaDay: 'dddd d'
+                },
+                eventOrder:false,
+        allDaySlot: true,
+        selectHelper: false,
+                events: [
+                    {
+                        title: "Attended",
+                        start: new Date(),
+                        allDay: true,
+                        backgroundColor: 'green',
+                    },
+                    {
+                        title: "in : 9:30",
+                        start: new Date(),
+                        allDay: true,
+                        backgroundColor:"blue",
+                    },
+                    {
+                        title: "out : 5:05",
+                        start: new Date(),
+                        allDay: true,
+                        backgroundColor:"blue",
+                    },
+                    {
+                        title: "Absent",
+                        start: new Date(),
+                        allDay: true,
+                        backgroundColor:"red",
+                    },
+                    {
+                        title: "Excuse out 3:00",
+                        start: new Date(),
+                        allDay: true,
+                        backgroundColor:"purple",
+                    },
+                ],
+            });
+            calendar.render();
+        });
+    </script>
+</head>
+
+<body>
+
+    <div id="calendar">
+        
+    </div>
+</body>
+
+</html>

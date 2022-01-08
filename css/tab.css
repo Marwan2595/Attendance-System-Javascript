@@ -2,9 +2,10 @@
                                                                   /* Start Login & Register Page */
 .loginRegisterForm{
     width: 60%;
+    margin-top: 50px;
 }       
 .loginRegisterForm input{
-    margin: 10px 0px;
+    margin: 10px 30px;
 }                                                          
                                                                   /* End Login & Register Page */
 

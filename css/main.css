@@ -19,7 +19,7 @@ a{
 .loginRegisterForm{
     background-color: white;
     width: 23%;
-    margin: 150px auto;
+    margin: 100px auto;
     border: solid 2px var(--primaryColor);
     border-radius: 10px;
     padding: 3%;
@@ -111,4 +111,34 @@ a{
 
 
                                                                   /* ------------------------- Start Employee Page ------------------------- */
+#calendar{
+    margin: 90px auto;
+    padding: 20px 30px;
+    width: 75%;
+    text-align: center;
+    background-image: url("../images/bg2.jpg") ;
+    border-radius: 6px;
+    box-shadow: 0 10px 20px #727272;
+    border-color: red;
+    
+}
+#calendar td , #calendar th{
+    border: solid 1px black !important;
+    color: red;
+}
+#calendar a{
+ 
+    color: var(--primaryColor);
+}
+#calendar button {
+    display: none;
+}
+.fc-header-toolbar .fc-toolbar-title{
+    color: var(--primaryColor);
+    font-size: 35px;
+}
+.fc-day-today .fc-daygrid-day-frame{
+   padding: 0px 0px!important;
+   background-color: red;
+} 
                                                                   /* ------------------------- End Employee Page ------------------------- */
