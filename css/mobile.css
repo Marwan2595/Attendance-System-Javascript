@@ -16,8 +16,9 @@
 #registerForm input[name=address]{
     margin:10px 0px 10px 30px;
     width: 80%;
-} 
-                                                                  /* End Login & Register Page */
+
+}
+                                                                                                                         /* End Login & Register Page */
 
 
 
@@ -34,7 +35,7 @@
 
                                                                   /* Start Employee Page */
 #calendar{
-    width: 95%;
+    width: 98%;
     padding: 10px;
 }
                                                                   /* End Employee Page */

@@ -1,6 +1,4 @@
 $(function(){
-    localStorage.setItem("session",null);
-    $('.js-example-basic-single').select2();
     let usersCheck = getLocalStorageData("users");
     if (usersCheck.length == 0) {
       let users =
@@ -52,6 +50,11 @@ $(function(){
      ];
      setLocalStorageData("users",users);
     }
+    // let tempDate= new Date('2018-04-07 20:00:00');
+    // let dateNow = new Date();
+    // if (tempDate.getHours()+tempDate.getMinutes() < dateNow.getHours()+dateNow.getMinutes()){
+    //     console.log("new day");
+    // }
 });
 
 function addToast(title,message,color,fun){
@@ -113,6 +116,17 @@ function usernameExistance(username) {
     }
   });
   return duplicated;
+}
+
+function getAllUsernames() {
+    let users = getLocalStorageData("users");
+    let allUsernames = [];
+    users.forEach((element) => {
+        if (element["role"] == "employee"){
+            allUsernames.push(element["username"]);
+        }
+    });
+    return allUsernames;
 }
 
 function getUserData(username) {
@@ -181,7 +195,7 @@ $("#registerForm").submit(function (e) {
       }
       //Adding user to local storage
       addUser(newEmployee);
-      window.location.replace("login.html");
+    addToast("Done","Data was added successfully","success",redirectWithDelay("login.html"));
 });
 
 $("#loginForm").submit(function (e) {
@@ -194,11 +208,12 @@ $("#loginForm").submit(function (e) {
 });
 
 function getEmployeeAttendance(username) {
-    let employeeAttendance = {};
+    let employeeAttendance = null;
     let dateNow = new Date();
     let attendanceData = getLocalStorageData("attendance");
     attendanceData.forEach((element) => {
-        if (username == element["username"] && (element["arrive"].toDateString() == dateNow.toDateString()) ) {
+        let empArrive = new Date(element["arrive"]);
+        if (username == element["username"] && (empArrive.toDateString() == dateNow.toDateString()) ) {
             employeeAttendance = element;
         }
     });
@@ -207,15 +222,16 @@ function getEmployeeAttendance(username) {
 
 function addArrivalAttendance(username) {
     let dateNow = new Date();
-    let tempDate= new Date('2018-04-07 08:30:00');
+    let tempDate= new Date();
+    tempDate.setHours(15,30,0);
     let lateCheck = false;
-    if (tempDate.getHours()+tempDate.getMinutes() < dateNow.getHours()+dateNow.getMinutes()){
-        console.log("late");
+    if (tempDate < dateNow){
         lateCheck = true;
-        addToast("Late","The Employee Attendance is Late","error");
+        addToast("Late","The Employee Attendance is Late","error",redirectWithDelay(""));
     }
     let empAttendance = {
         "username" : username,
+        "date" : dateNow.toLocaleDateString("fr-CA"),
         "arrive" : dateNow,
         "leave" : null,
         "late" : lateCheck,
@@ -224,25 +240,211 @@ function addArrivalAttendance(username) {
     let attendanceData = getLocalStorageData("attendance");
     attendanceData.push(empAttendance);
     setLocalStorageData("attendance",attendanceData);
+    addToast("Done","Data was added successfully","success",redirectWithDelay(""));
 }
 
 function addLeaveAttendance(username) {
     let attendanceData = getLocalStorageData("attendance");
     let dateNow = new Date();
-    attendanceData.forEach((element) => {
-        if (username == element["username"] && (element["arrive"].toDateString() == dateNow.toDateString()) ) {
-            let tempDate= new Date('2018-04-07 15:30:00');
+     attendanceData.forEach((element) => {
+        let empArrive = new Date(element["arrive"]);
+        if (username == element["username"] && (empArrive.toDateString() == dateNow.toDateString()) ) {
+            let tempDate= new Date();
+            tempDate.setHours(15,30,0);
             let excuseCheck = false;
-            if (tempDate.getHours()+tempDate.getMinutes() > dateNow.getHours()+dateNow.getMinutes()){
-                console.log("excuse");
+            if (tempDate > dateNow){
                 excuseCheck = true;
-                addToast("Excuse","The Employee Leave is with Excuse","warning");
+                addToast("Excuse","The Employee Leave is with Excuse","warning",redirectWithDelay(""));
             }
             element["leave"] = dateNow;
             element["excuse"] = excuseCheck;
+            addToast("Done","Data was added successfully","success",redirectWithDelay(""));
         }
     });
     setLocalStorageData("attendance",attendanceData);
+
 }
 
+function checkAttendanceType (empUsername){
+    console.log(empUsername);
+    let attendanceType ="";
+    if (getEmployeeAttendance(empUsername) != null){
+        attendanceType = "Confirm Leaving";
+    }else{
+        attendanceType = "Confirm Arrival";
+    }
+    $("#securityForm button").text(attendanceType);
+}
+
+function securityForm () {
+
+    let attendanceType = "Confirm Arrival";
+    let allUsernames = getAllUsernames();
+    let users = "";
+    allUsernames.forEach((element)=>
+       users += `<option value="${element}">${element}</option>`
+    )
+    let form = $("#securityForm");
+    form.html(`
+            <h1>Welcome Back,</h1>
+            <h1>Choose Employee Username</h1>
+            <select class="js-example-basic-single" onchange="checkAttendanceType(this.value)" name="empUsername" id="empUsername" required>
+                <option value=""></option>
+                ${users}
+            </select>
+            <button type="submit"> ${attendanceType}</button>
+    `);
+
+}
+
+$("#securityForm").submit(function (e) {
+    e.preventDefault();
+    let empUsername =$("#empUsername").val();
+    console.log(empUsername);
+    if (getEmployeeAttendance(empUsername) == null){
+        addArrivalAttendance(empUsername);
+    }else{
+        addLeaveAttendance(empUsername);
+    }
+
+});
+
+function report(date = new Date(),user = null , reportType = "daily") {
+    let data = [];
+    date.toDateString()
+    let attendanceData = getLocalStorageData("attendance");
+    if (user == null){
+        attendanceData.forEach((element)=>{
+            let arriveDate = new Date(element["arrive"]);
+            if (arriveDate.toDateString() == date.toDateString()) {
+                data.push(element);
+            }
+        });
+        tableView(data);
+    }else{
+        switch (reportType) {
+            case "daily":
+                attendanceData.forEach((element)=>{
+                    let arriveDate = new Date(element["arrive"]);
+                    if ((arriveDate.toDateString() == date.toDateString()) && element["username"] == user) {
+                        data.push(element);
+                    }
+                });
+                tableView(data);
+                break;
+            case "monthly":
+                attendanceData.forEach((element)=>{
+                    let arriveDate = new Date(element["arrive"]);
+                    if ((arriveDate.getMonth() == date.getMonth()) && element["username"] == user) {
+                        data.push(element);
+                    }
+                });
+                calenderView(data);
+                break;
+        }
+    }
+    return data;
+}
+
+function timeFromDate(date = new Date){
+   let minutes = date.getMinutes();
+    let hours = date.getHours();
+    if (date.getHours() > 12){
+        hours = hours - 12;
+    }
+    return `${hours}:${minutes}`;
+}
+
+function calenderView(data) {
+    console.log(data);
+    let allEvents =[];
+    data.forEach((element)=>{
+        let date = element["date"];
+        let arriveDateTime = new Date(element["arrive"]);
+        let leaveDateTime = new Date(element["leave"]);
+        let arriveTime = timeFromDate(arriveDateTime);
+        let leaveTime = timeFromDate(leaveDateTime);
+        let late = element["late"];
+        let excuse = element["excuse"];
+        if (element["arrive"] == "null"){
+            allEvents.push({
+                title: "Absent",
+                start: new Date(date),
+                allDay: true,
+                backgroundColor:"red",
+            });
+        }else{
+            allEvents.push({
+                title: "Attended",
+                start: new Date(date),
+                allDay: true,
+                backgroundColor:"green",
+            });
+            if (late){
+                allEvents.push({
+                    title: `Late ${arriveTime}`,
+                    start: new Date(date),
+                    allDay: true,
+                    backgroundColor:"indianred",
+                });
+            }else {
+                allEvents.push({
+                    title: `In ${arriveTime}`,
+                    start: new Date(date),
+                    allDay: true,
+                    backgroundColor:"green",
+                });
+            }
+            if (excuse){
+                allEvents.push({
+                    title: `Excuse ${arriveTime}`,
+                    start: new Date(date),
+                    allDay: true,
+                    backgroundColor:"purple",
+                });
+            }else {
+                allEvents.push({
+                    title: `Out ${leaveTime}`,
+                    start: new Date(date),
+                    allDay: true,
+                    backgroundColor:"green",
+                });
+            }
+        }
+    });
+    console.log(allEvents);
+    var calendarEl = document.getElementById("calendar");
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        headerToolbar: {
+            left: '',
+            center: 'title',
+            right: '',
+        },
+        contentHeight:"auto",
+        editable: false,
+        firstDay: 6, //  1(Monday) this can be changed to 0(Sunday) for the USA system
+        selectable: false,
+        defaultView: 'month',
+        axisFormat: 'h:mm',
+        columnFormat: {
+            month: 'ddd', // Mon
+            agendaDay: 'dddd d'
+        },
+        eventOrder:false,
+        allDaySlot: true,
+        selectHelper: false,
+        events:allEvents,
+    });
+    calendar.render();
+}
+function tableView(data) {
+    let tableHeader = `
+    <tr>
+        <th>Employee</th>
+        <th>Date</th>
+        <th>Arrive</th>
+        <th>Leave</th>
+    </tr>
+    `;
+}
 
