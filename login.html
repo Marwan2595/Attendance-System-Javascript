@@ -2,19 +2,21 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login |</title>
 <style>
     @import url("css/main.css");
     @import url("css/desktop.css") screen and (min-width: 1301px);
     @import url("css/tab.css") screen and (max-width: 1300px);
     @import url("css/mobile.css") screen and (max-width: 900px);
 </style>
+    <link href="js/toast/toast.style.min.css" rel="stylesheet">
 </head>
 <body class="loginRegisterBody">
-    <form class="loginRegisterForm" id="loginForm" action="">
+    <form class="mainForm" id="loginForm" action="">
         <h1>Welcome Back,</h1>
         <label for="username">Username</label>
         <input type="text" name="username" id="username" autocomplete="off" required >
-        <label for="password">Password </label>
+        <label for="pass">Password </label>
         <input type="password" name="pass" id="pass" required>
         <button type="submit">Login</button>
         <a href="register.html"><h4>Create your Account ?</h4></a>
@@ -22,6 +24,7 @@
 
     <script src="js/jquery-3.1.1.js"></script>
     <script src="js/jqueryUi/jquery-ui.js"></script>
+    <script src="js/toast/toast.script.js"></script>
     <script src="js/main.js"></script>
 </body>
 </html>

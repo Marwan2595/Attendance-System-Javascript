@@ -1,6 +1,6 @@
 
                                                                   /* Start Login & Register Page */
-.loginRegisterForm{
+.mainForm{
     width: 90%;
 }
 #registerForm {
@@ -10,7 +10,7 @@
     width: 100%;
     display: block;
 }
-.loginRegisterForm input{
+.mainForm input , .mainForm select{
     margin:10px 0px 10px 30px;
 } 
 #registerForm input[name=address]{
