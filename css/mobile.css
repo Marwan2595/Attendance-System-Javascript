@@ -24,6 +24,26 @@
 
 
                                                    /* Start Admin Page */
+#tableView{
+    width: 98%;
+}
+
+#employeeBrief{
+     width: 98%;
+     margin: 10px auto;
+ }
+.briefDiv{
+    width: 40%;
+    margin: 10px auto;
+}
+                                                                  #reportForm{
+                                                                      width: 100%;
+                                                                      text-align: center;
+                                                                  }
+#reportForm input , #reportForm select{
+    width: 80%;
+    margin: 10px auto;
+ }
                                                                   /* End Admin Page */
 
 

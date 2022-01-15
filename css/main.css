@@ -2,7 +2,7 @@
     font-family: Bradley Hand, cursive;
 }
 :root {
-    --primaryColor: rgb(114, 74, 0);
+    --primaryColor: #492929;
     --secondryColor: rgb(131, 131, 247);
 }
 a{
@@ -10,11 +10,39 @@ a{
       color: black;
       font-weight: bold;
   }
+nav{
+    display: flex;
+    justify-content: space-around;
+    margin: 40px 0px;
+}
+nav img {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+}
+nav button {
+    width: 85px;
+    height: 40px;
+    margin-top: 25px;
+    border-radius: 5%;
+    transition: .8s;
+    background-color: var(--primaryColor);
+    color: white;
+}
+nav button:hover{
+    box-shadow: 0 18px 30px 0 rgba(65, 64, 64, 0.2);
+    width: 90px;
+    height: 50px;
+    padding:  15px 10px;
+    cursor: pointer;
+}
                                                                   /* ------------------------- Start Login & Register Page ------------------------- */
 .loginRegisterBody{
-    background-image:   url("../images/bg.jpg") ;
+    background-image:   url("../images/bg2.png") ;
     background-attachment: fixed;
     background-clip: content-box;
+    background-repeat: no-repeat;
+    background-size: cover;
   }
 .mainForm{
     background-color: white;
@@ -112,7 +140,7 @@ a{
 
 
                                                                   /* ------------------------- Start Admin Page ------------------------- */
-#reportTable {
+#tableView ,#employeeTable {
     font-family: Arial, Helvetica, sans-serif;
     border-collapse: collapse;
     width: 75%;
@@ -120,22 +148,63 @@ a{
     text-align: center;
 }
 
-#reportTable td, #customers th {
+#tableView td, #tableView th, #employeeTable td, #employeeTable th {
     border: 1px solid #787777;
     padding: 8px;
 }
 
-#reportTable tr:nth-child(even){background-color: #e7dfdf;}
+#tableView tr:nth-child(even), #employeeTable tr:nth-child(even){background-color: #e7dfdf;}
 
-#reportTable tr:hover {background-color: #d9d8d8;}
+#tableView tr:hover , #employeeTable tr:hover {background-color: #d9d8d8;}
 
-#reportTable th {
+#tableView th ,#employeeTable th {
     padding-top: 12px;
     padding-bottom: 12px;
     background-color: var(--primaryColor);
     color: white;
 }
+
+
+#employeeBrief{
+    width: 55%;
+    margin: 25px auto;
+    text-align: center;
+}
+#employeeBrief h1{
+    font-size: 60px;
+    color: var(--primaryColor);
+    font-width: bold;
+}
+.briefDiv{
+    width: 20%;
+    display: inline-block;
+    text-align: center;
+    padding: 10px;
+    border-radius:2%;
+    background-color: dodgerblue;
+    margin: 50px 10px ;
+    font-width: bold;
+    font-size: 30px;
+    color: white;
+    text-transform: uppercase;
+
+}
+.absent{background-color: #fd2020}
+.attend{background-color: green}
+.late {background-color: indianred}
+.excuse{background-color: purple}
+
+#reportsHeader{
+    text-align: center;
+    color: var(--primaryColor);
+    font-size: 50px;
+    font-width: bold;
+}
+
+
+
                                                                   /* ------------------------- End Admin Page ------------------------- */
+
 
 
 
@@ -150,7 +219,7 @@ a{
     padding: 20px 30px;
     width: 75%;
     text-align: center;
-    background-image: url("../images/bg2.jpg") ;
+    background-color: #e0e0e0;
     border-radius: 6px;
     box-shadow: 0 10px 20px #727272;
     border-color: red;
@@ -173,5 +242,35 @@ a{
 .fc-day-today .fc-daygrid-day-frame{
    padding: 0px 0px!important;
    background-color: palegoldenrod;
-} 
+}
+td span{
+    padding: 3px;
+    border-radius: 3px;
+    color: white;
+}
+#reportForm{
+    width: 60%;
+    margin: 35px auto;
+    text-align: center;
+}
+#reportForm button{
+    display: block;
+    margin: 15px auto;
+    width: 85px;
+    height: 40px;
+    border-radius: 5%;
+    transition: .8s;
+    background-color: var(--primaryColor);
+    color: white;
+}
+#reportForm input , #reportForm select{
+    width: 45%;
+    margin: 10px auto;
+    height: 50px;
+    padding: .15%;
+    padding-left: 10px;
+    border:1px #7d7c7c solid;
+    border-radius: 4px;
+}
+
                                                                   /* ------------------------- End Employee Page ------------------------- */

@@ -13,6 +13,17 @@
 
 
                                                                   /* Start Admin Page */
+#tableView{
+    width: 98%;
+}
+                                                                  #employeeBrief{
+                                                                      width: 98%;
+                                                                      margin: 10px auto;
+                                                                  }
+                                                                  .briefDiv{
+                                                                      width: 40%;
+                                                                      margin: 10px auto;
+                                                                  }
                                                                   /* End Admin Page */
 
 

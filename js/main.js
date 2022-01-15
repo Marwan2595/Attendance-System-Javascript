@@ -9,6 +9,7 @@ $(function(){
          "firstname":"Marwan",
          "lastname":"Sayed",
          "age":"27",
+           "date":"2022-01-14",
          "email":"marwan.ss2595@gmail.com",
          "address":"ssss",
          "role":"admin",
@@ -20,6 +21,7 @@ $(function(){
          "firstname":"Ahmed",
          "lastname":"Sayed",
          "age":"30",
+           "date":"2022-01-14",
          "email":"security@gmail.com",
          "address":"ssss",
          "role":"security",
@@ -31,6 +33,7 @@ $(function(){
          "firstname":"Mohamed",
          "lastname":"Mahmoud",
          "age":"25",
+           "date":"2022-01-14",
          "email":"example@gmail.com",
          "address":"ssss",
          "role":"employee",
@@ -42,6 +45,7 @@ $(function(){
               "firstname":"Mohamed",
               "lastname":"Mahmoud",
               "age":"25",
+              "date":"2022-01-14",
               "email":"example@gmail.com",
               "address":"ssss",
               "role":"employee",
@@ -51,11 +55,43 @@ $(function(){
      setLocalStorageData("users",users);
     }
     // let tempDate= new Date('2018-04-07 20:00:00');
-    // let dateNow = new Date();
+    let dateNow = new Date();
     // if (tempDate.getHours()+tempDate.getMinutes() < dateNow.getHours()+dateNow.getMinutes()){
-    //     console.log("new day");
+        console.log(dateNow.getHours());
     // }
+    if (dateNow.getHours() >= 16){
+        leaveAll();
+    }
 });
+
+function leaveAll() {
+        let users = getAllUsernames();
+        let attendance = getLocalStorageData("attendance");
+        let dateNow = new Date();
+        dateNow.setHours(15,30,0);
+        users.forEach((user) => {
+            let attended = 0;
+            attendance.forEach((att) => {
+                if (user["username"] == att["username"]){
+                    att["leave"] = dateNow;
+                    attended = 1;
+                }
+            });
+            if (attended == 0){
+                getEmployeeAbsent(user["username"]);
+            }
+
+        });
+        setLocalStorageData("attendance",attendance);
+}
+
+function logout() {
+    let confirmLogout = confirm("Are you sure you want to logout ?");
+    if (confirmLogout){
+        localStorage.setItem("session",null);
+        window.location.replace("../login.html");
+    }
+}
 
 function addToast(title,message,color,fun){
     $.Toast(title, message, color, {
@@ -243,6 +279,21 @@ function addArrivalAttendance(username) {
     addToast("Done","Data was added successfully","success",redirectWithDelay(""));
 }
 
+function getEmployeeAbsent(username) {
+    let dateNow = new Date();
+    let empAbsent = {
+        "username" : username,
+        "date" : dateNow.toLocaleDateString("fr-CA"),
+        "arrive" : null,
+        "leave" : null,
+        "late" : false,
+        "excuse" : false,
+    };
+    let attendanceData = getLocalStorageData("attendance");
+    attendanceData.push(empAbsent);
+    setLocalStorageData("attendance",attendanceData);
+}
+
 function addLeaveAttendance(username) {
     let attendanceData = getLocalStorageData("attendance");
     let dateNow = new Date();
@@ -276,14 +327,19 @@ function checkAttendanceType (empUsername){
     $("#securityForm button").text(attendanceType);
 }
 
-function securityForm () {
-
-    let attendanceType = "Confirm Arrival";
+function usernamesOptions() {
     let allUsernames = getAllUsernames();
     let users = "";
     allUsernames.forEach((element)=>
-       users += `<option value="${element}">${element}</option>`
+        users += `<option value="${element}">${element}</option>`
     )
+    return users;
+}
+
+function securityForm () {
+
+    let attendanceType = "Confirm Arrival";
+    let users = usernamesOptions();
     let form = $("#securityForm");
     form.html(`
             <h1>Welcome Back,</h1>
@@ -309,9 +365,8 @@ $("#securityForm").submit(function (e) {
 
 });
 
-function report(date = new Date(),user = null , reportType = "daily") {
+function report(user = null , reportType = "daily",date = new Date()) {
     let data = [];
-    date.toDateString()
     let attendanceData = getLocalStorageData("attendance");
     if (user == null){
         attendanceData.forEach((element)=>{
@@ -333,6 +388,7 @@ function report(date = new Date(),user = null , reportType = "daily") {
                 tableView(data);
                 break;
             case "monthly":
+                $("#calender").css("display","block");
                 attendanceData.forEach((element)=>{
                     let arriveDate = new Date(element["arrive"]);
                     if ((arriveDate.getMonth() == date.getMonth()) && element["username"] == user) {
@@ -437,6 +493,7 @@ function calenderView(data) {
     });
     calendar.render();
 }
+
 function tableView(data) {
     let tableHeader = `
     <tr>
@@ -446,5 +503,166 @@ function tableView(data) {
         <th>Leave</th>
     </tr>
     `;
+    let tableBody = ``;
+    data.forEach((element)=>{
+        let date = element["date"];
+        let user = getUserData(element["username"]);
+        let name = `${user["firstname"]} ${user["lastname"]}`
+        let arriveDateTime = new Date(element["arrive"]);
+        let leaveDateTime = new Date(element["leave"]);
+        let arriveTime = timeFromDate(arriveDateTime);
+        let leaveTime = timeFromDate(leaveDateTime);
+        let lateBG = element["late"] ? "late" : "";
+        let excuseBG = element["excuse"] ? "excuse" : "";
+        let dateNow = new Date();
+        tableBody += `
+            <tr>
+                <td>${name}</td>
+                <td>${date}</td>
+                <td>${arriveTime} <span class="${lateBG}">${lateBG}</span></td>
+                <td>${leaveTime} <span class="${excuseBG}">${excuseBG}</span></td>
+                <td><button value="${element['username']}" onclick="employeeBriefView(this.value);">Brief</button></td>
+                <td><button value="${element['username']}" onclick="report(this.value,'monthly')">Report</button></td>
+            </tr>
+        `;
+        let table = tableHeader+tableBody;
+        $("#tableView").html(table);
+    });
 }
 
+function employeeBrief(username,date = new Date()) {
+    $("#employeeBrief").css("display","block");
+    let info = getUserData(username);
+    let late =0;
+    let excuse =0;
+    let attend =0;
+    let absent =0;
+    let attendanceData = getLocalStorageData("attendance");
+    attendanceData.forEach((element)=>{
+        let arriveDate = new Date(element["arrive"]);
+        if ((arriveDate.getMonth() == date.getMonth()) && element["username"] == username) {
+            if (element["late"]){
+                late++;
+            }
+            if (element["excuse"]){
+                excuse++;
+            }
+            if (element["arrive"] == "null" && element["leave"] == "null"){
+                absent++;
+            }else {
+                attend++;
+            }
+        }
+    });
+    let brief = {
+        "info":info,
+        "late":late,
+        "excuse":excuse,
+        "attend":attend,
+        "absent":absent,
+    }
+    return brief;
+}
+
+function employeeBriefView(username,date = new Date()) {
+    let data = employeeBrief(username,date);
+    let briefInfo="";
+    let briefDiv="";
+    for (const prop in data){
+      if (prop == "info"){
+           briefInfo += `
+                <h1>${data["info"]["firstname"]} ${data["info"]["lastname"]}</h1>
+          `;
+      }else{
+           briefDiv += `
+            <div class="briefDiv ${prop}">
+                <div class="briefTitle" >${prop}</div>
+                <div class="briefNumber">${data[prop]}</div>
+            </div>
+        `;
+      }
+    }
+    $("#employeeBrief").html(briefInfo+briefDiv);
+}
+
+function activate(username) {
+    let users = getLocalStorageData("users");
+    users.forEach((element) => {
+        if (username == element["username"]) {
+            let confirmActivate = confirm("Are you sure you want to activate this employee ?");
+            if (confirmActivate){
+                element["status"] = true;
+            }
+        }
+    });
+    setLocalStorageData("users",users);
+    inActiveEmployeesTable();
+}
+
+function inActiveEmployee() {
+    let inactiveEmployees = [];
+    let users = getLocalStorageData("users");
+    users.forEach((element) => {
+        if (element["role"] == "employee" && element["status"] == 0) {
+            inactiveEmployees.push(element);
+        }
+    });
+    return inactiveEmployees;
+}
+
+function inActiveEmployeesTable() {
+    let data = inActiveEmployee();
+    if (data.length == 0){
+        $("#employeeTable").html('');
+        return;
+    }
+    let tableHeader = `
+    <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Age</th>
+        <th>Address</th>
+    </tr>
+    `;
+    let tableBody = ``;
+    data.forEach((element)=>{
+        // let date = element["date"];
+        // let user = getUserData(element["username"]);
+        let name = `${element["firstname"]} ${element["lastname"]}`
+        let email = element["email"];
+        let age = element["age"];
+        let address = element["address"];
+
+        tableBody += `
+            <tr>
+                <td>${name}</td>
+                <td>${email}</td>
+                <td>${age}</td>
+                <td>${address}</td>
+                <td><button value="${element['username']}" onclick="activate(this.value);">Activate</button></td>
+            </tr>
+        `;
+        let table = tableHeader+tableBody;
+        $("#employeeTable").html(table);
+    });
+}
+
+function reportFormSelect () {
+    let users = usernamesOptions();
+    let select = $("#reportUsername");
+    select.html(`
+                <option selected value="null">All Employees</option>
+                ${users}
+                `);
+
+}
+
+$("#reportForm").submit(function (e) {
+    e.preventDefault();
+    let username =$("#reportUsername").val();
+    let formDate = $("#reportDate").val();
+    let date = new Date(formDate);
+    console.log(username+" --- "+date);
+    report(username ,"daily", date);
+
+});

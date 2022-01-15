@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <title>Admin |</title>
+    <noscript>Please Enable Javascript From Browser Setting</noscript>
     <script>
         if (localStorage.getItem("session") == "null"){
             window.location.replace("../login.html");
@@ -16,73 +17,44 @@
         @import url("../css/desktop.css") screen and (min-width: 1301px);
         @import url("../css/tab.css") screen and (max-width: 1300px);
         @import url("../css/mobile.css") screen and (max-width: 600px);
+         #employeeBrief{
+            display: none;
+        }
     </style>
     <script src="../js/calender/lib/main.js"></script>
-    <script>
-
-        document.addEventListener('DOMContentLoaded', function () {
-            var calendarEl = document.getElementById('calendar');
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                headerToolbar: {
-                    left: '',
-                    center: 'title',
-                    right: '',
-                },
-                editable: false,
-                firstDay: 6, //  1(Monday) this can be changed to 0(Sunday) for the USA system
-                selectable: false,
-                defaultView: 'month',
-                axisFormat: 'h:mm',
-                columnFormat: {
-                    month: 'ddd', // Mon
-                    agendaDay: 'dddd d'
-                },
-                eventOrder:false,
-                allDaySlot: true,
-                selectHelper: false,
-                events: [
-                    {
-                        title: "Attended",
-                        start: new Date(),
-                        allDay: true,
-                        backgroundColor: 'green',
-                    },
-                    {
-                        title: "in : 9:30",
-                        start: new Date(),
-                        allDay: true,
-                        backgroundColor:"blue",
-                    },
-                    {
-                        title: "out : 5:05",
-                        start: new Date(),
-                        allDay: true,
-                        backgroundColor:"blue",
-                    },
-                    {
-                        title: "Absent",
-                        start: new Date(),
-                        allDay: true,
-                        backgroundColor:"red",
-                    },
-                    {
-                        title: "Excuse out 3:00",
-                        start: new Date(),
-                        allDay: true,
-                        backgroundColor:"purple",
-                    },
-                ],
-            });
-            calendar.render();
-        });
-    </script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 </head>
 
 <body>
+<nav>
+    <img src="../images/male.png">
+    <button onclick="logout()" id="logout">Logout</button>
+</nav>
 
-<div id="calendar">
+<table id="employeeTable"></table>
+<h1 id="reportsHeader">Reports</h1>
+<form id="reportForm">
+    <select class="js-example-basic-single"  name="reportUsername" id="reportUsername" required></select>
+    <input type="date" value="" id="reportDate" >
+    <button type="submit">Submit</button>
+</form>
+<table id="tableView"></table>
+<div id="employeeBrief"></div>
+<div id="calendar"></div>
 
-</div>
+<script src="../js/jquery-3.1.1.js"></script>
+<script src="../js/jqueryUi/jquery-ui.js"></script>
+<script src="../js/toast/toast.script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="../js/main.js"></script>
+<script>
+    let nowDate = new Date();
+    reportFormSelect();
+    $('.js-example-basic-single').select2();
+    report(null,'daily',nowDate);
+    inActiveEmployeesTable();
+</script>
+
 </body>
 
 </html>
