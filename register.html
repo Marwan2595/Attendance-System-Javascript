@@ -14,6 +14,12 @@
 </style>
     <title>Register |</title>
 <link href="js/toast/toast.style.min.css" rel="stylesheet">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function() {
+            emailjs.init("user_YQ2GBEvdf6MDRSysL5QYy");
+        })();
+    </script>
 </head>
 <body class="loginRegisterBody">
     <form class="mainForm" id="registerForm"  action="">
@@ -37,10 +43,10 @@
         <button type="submit">Register</button>
         <h4>Have an Account ?<a href="login.html"> Login</a></h4>
     </form>
-
     <script src="js/jquery-3.1.1.js"></script>
     <script src="js/jqueryUi/jquery-ui.js"></script>
     <script src="js/toast/toast.script.js"></script>
     <script src="js/main.js"></script>
+
 </body>
 </html>

@@ -64,6 +64,31 @@ $(function(){
     }
 });
 
+function SendLogin(employee) {
+    if (employee) {
+        let eamilForm = {
+            from_name: "Marwan CST Project",
+            to_name: employee.email,
+            user_name: employee.username,
+            user_password: employee.password,
+            user_email:employee.email,
+            message: `user name: ${employee.username}`,
+            message1: `user password: ${employee.password}`,
+        };
+        emailjs.send("service_wsufhzx", "template_poqgvbp", eamilForm).then(   //service ID , template ID
+            function () {
+                console.log(`success`);
+                [...document.querySelectorAll("input")].forEach(
+                    (inp) => (inp.value = "")
+                );
+            },
+            function (err) {
+                console.log(`Failed`, err);
+            }
+        );
+    }
+}
+
 function leaveAll() {
         let users = getAllUsernames();
         let attendance = getLocalStorageData("attendance");
@@ -229,6 +254,7 @@ $("#registerForm").submit(function (e) {
         "role":"employee",
         "status":false,
       }
+      SendLogin(newEmployee);
       //Adding user to local storage
       addUser(newEmployee);
     addToast("Done","Data was added successfully","success",redirectWithDelay("login.html"));
