@@ -39,8 +39,8 @@
     <script>
         let nowDate = new Date();
         let user = getLocalStorageData("session");
-        report(user["username"],nowDate,"monthly");
-        employeeBriefView(employeeBrief(user["username"]));
+        report(user["username"], "monthly", nowDate);
+        employeeBriefView(user["username"]);
     </script>
 
 </body>
